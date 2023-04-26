@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link rel="icon" type="image/x-icon" href="assets/images/img0.png" />
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+  <title>PENDI</title>
+
+
+  <style>
+    #mapa {
+      width: 100%;
+      height: 300px;
+      margin-top: 10px;
+    }
+  </style>
+  ]
+  <link rel="stylesheet" href="assets/css/fontawesome.css">
+  <link rel="stylesheet" href="assets/css/templatemo-digimedia-v1.css">
+  <link rel="stylesheet" href="assets/css/animated.css">
+  <link rel="stylesheet" href="assets/css/owl.css">
+
+<body onload="iniciarMapa()">
+
+  <div id="contact" class="contact-us section">
+    <center>
+      <h1>Mapa de Google</h1><br>
+    </center>
+    <div class="container">
+
+      <div class="col-lg-14 wow fadeInUp" data-wow-duration="0.5s" data-wow-delay="0.25s">
+        <form id="contact" action="" method="post">
+          <div class="row">
+
+
+            <h2>Coordenadas:</h2>
+            <div>
+              <label for="latitud">Latitud:</label>
+              <input type="text" id="latitud" readonly>
+            </div><br><br>
+
+            <div>
+              <label for="altitud">Longitud:</label>
+              <input type="text" id="altitud" readonly>
+            </div><br><br>
+            </fieldset><br>
+
+            <div id="mapa"></div>
+          </div>
+      </div>
+    </div>
+  </div>
+  </form>
+  </div>
+  </div>
+  </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <p>Grupo Pendi
+            <br>Design: <a href="https://templatemo.com" target="_parent" title="free css templates">Avalos y Rodriguez
+              2021</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- Scripts -->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/owl-carousel.js"></script>
+  <script src="assets/js/animation.js"></script>
+  <script src="assets/js/imagesloaded.js"></script>
+  <script src="assets/js/custom.js"></script>
+  <script>
+    $(document).ready(function () {
+      var urlParams = new URLSearchParams(window.location.search);
+      var latitud = urlParams.get('latitud') || 19.8011219;
+      var altitud = urlParams.get('altitud') || -99.090288;
+
+      coordenadas = {
+        lng: altitud,
+        lat: latitud
+      }
+      generarMapa(coordenadas);
+
+      $("#latitud").val(latitud);
+      $("#altitud").val(altitud);
+    });
+
+    function generarMapa(coordenadas) {
+      var mapa = new google.maps.Map(document.getElementById('mapa'), {
+        zoom: 15,
+        center: new google.maps.LatLng(coordenadas.lat, coordenadas.lng)
+      });
+
+      marcador = new google.maps.Marker({
+        map: mapa,
+        draggable: true,
+        position: new google.maps.LatLng(coordenadas.lat, coordenadas.lng)
+      });
+
+      marcador.addListener('dragend', function (event) {
+        $("#latitud").val(this.getPosition().lat());
+        $("#altitud").val(this.getPosition().lng());
+      });
+    }
+
+    function updateCoordinates() {
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", "/get-coordinates", true);
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
+          // ... procesa las coordenadas recibidas del servidor ...
+          // ... actualiza el contenido de la página con las nuevas coordenadas ...
+        }
+      }
+      xhr.send();
+    }
+  </script>
+
+
+  <script src="https://maps.googleapis.com/maps/api/js?key=&callback=iniciarMapa"></script>
+</body>
+
+</html>
